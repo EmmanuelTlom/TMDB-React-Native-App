@@ -1,37 +1,46 @@
-import { Tabs } from 'expo-router';
+import { Stack } from 'expo-router';
 import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { FontAwesome } from "@expo/vector-icons";
+import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { TouchableOpacity } from 'react-native';
 
-export default function TabLayout() {
+export default function Layout() {
   const colorScheme = useColorScheme();
+  const router = useRouter();
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
+    <Stack>
+      <Stack.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          title: 'Movies App', // Page title
+          headerRight: () => (
+            // Search button in the navbar
+            <TouchableOpacity onPress={() => router.push('/search')}>
+              <FontAwesome
+                name="search"
+                size={24}
+                color={Colors[colorScheme ?? 'light'].tint}
+                style={{ marginRight: 16 }}
+              />
+            </TouchableOpacity>
           ),
         }}
       />
-      <Tabs.Screen
-        name="explore"
+      <Stack.Screen
+        name="search"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          title: 'Search Movies', // Title for the search page
         }}
       />
-    </Tabs>
+      <Stack.Screen
+        name="moviedetail"
+        options={{
+          title: 'Movie Detail', // Title for the movie detail page
+        }}
+      />
+    </Stack>
   );
 }
